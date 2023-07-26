@@ -17,8 +17,8 @@ const Home = () => {
         <main>
             <section>
                 <NavLink to="/categoryPage/big"><Categories name="big" imgPath={bigImg} /></NavLink>
-                <NavLink to={"/categoryPage/medium"}><Categories name="medium" imgPath={mediumImg} /></NavLink>
-                <NavLink to={"/categoryPage/small"}><Categories name="small" imgPath={smallImg} /></NavLink>
+                <NavLink to="/categoryPage/medium"><Categories name="medium" imgPath={mediumImg} /></NavLink>
+                <NavLink to="/categoryPage/small"><Categories name="small" imgPath={smallImg} /></NavLink>
 
             </section>
         </main>

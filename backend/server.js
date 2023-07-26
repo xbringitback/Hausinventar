@@ -9,10 +9,16 @@ import {Inventory} from "./model/InventarModel.js"
 
 import {v2 as cloudinary} from 'cloudinary';
           
+// cloudinary.config({ 
+//   cloud_name: 'dqjog4rue', 
+//   api_key: '976473871432195', 
+//   api_secret: 'akSg3BKvBdgWf_1rVxU0jKcLiK8' 
+// });
+
 cloudinary.config({ 
-  cloud_name: 'dqjog4rue', 
-  api_key: '976473871432195', 
-  api_secret: 'akSg3BKvBdgWf_1rVxU0jKcLiK8' 
+    cloud_name: process.env.CLOUDINARY_CLOUDNAME, 
+    api_key: process.env.CLOUDINARY_API_KEY, 
+    api_secret: process.env.CLOUDINARY_API_SECRET
 });
 
 const app = express();
@@ -37,7 +43,7 @@ app.get("/api/inventar/:id", async (req, res) => {
 app.post("/api/inventar/image", upload.single("image"), async (req, res) => {
     try {
         cloudinary.uploader.upload_stream({resource_type: "image", folder: "Inventory"}, async (err, result) => {
-            console.log(result);
+            console.log(result, err);
             const response = await Inventory.create({...req.body, image: {url: result.secure_url, imageId: result.public_id}
             })
             res.send(response)
