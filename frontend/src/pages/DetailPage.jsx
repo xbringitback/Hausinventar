@@ -3,6 +3,7 @@ import { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
 
 import Nav from "../components/nav";
+import DetailCard from "../components/DetailCard";
 
 
 const DetailPage = () => {
@@ -24,8 +25,9 @@ const DetailPage = () => {
             <Nav/>
         </header>
         <main>
-            <h1>detailPage</h1>
-
+            <section>
+                <DetailCard id={inventoryItem._id} title={inventoryItem.title} room={inventoryItem.room} image={inventoryItem.image?.url} description={inventoryItem.description} setRefresh={setRefresh}/>
+            </section>
         </main>
         
         </>
