@@ -2,7 +2,7 @@ import axios from "axios";
 import { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
 
-import Nav from "../components/nav";
+import Nav from "../components/Nav";
 import DetailCard from "../components/DetailCard";
 
 

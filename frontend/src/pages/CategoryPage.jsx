@@ -4,7 +4,7 @@ import axios from "axios"
 
 import AddItem from "../components/AddItem";
 import InventoryCard from "../components/InventoryCard";
-import Nav from "../components/nav";
+import Nav from "../components/Nav";
 
 const CategoryPage = () => {
 

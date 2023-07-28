@@ -1,0 +1,8 @@
+nav {
+    display: flex;
+    justify-content: space-between;
+}
+a {
+    text-decoration: none;
+    color: rgb(188, 13, 241);
+}

@@ -6,6 +6,7 @@ import multer from "multer";
 import "./model/index.js";
 
 import {Inventory} from "./model/InventarModel.js"
+import {UserProfile} from "./model/UserModel.js"
 
 import {v2 as cloudinary} from 'cloudinary';
           
@@ -89,6 +90,76 @@ app.delete("/api/inventar/:id", async (req, res) => {
         res.send("Error")
     }
 })
+
+// !User ===========
+
+app.post("/api/user/image", upload.single("image"), async (req, res) => {
+    try {
+        cloudinary.uploader.upload_stream({resource_type: "image", folder: "UserFolder"}, async (err, result) => {
+            console.log(result, err);
+            const response = await UserProfile.create({...req.body, image: {url: result.secure_url, imageId: result.public_id}
+            })
+            res.send(response)
+        }).end(req.file.buffer)
+    } catch (err) {
+        console.log(err);
+        res.status(500).send("error")
+    }
+})
+
+// app.get("/api/user", async (req, res) => {
+//     const data = await UserProfile.find()
+//     res.send(data)
+// })
+
+app.get("/api/user/:id", async (req, res) => {
+    const id = req.params.id;
+    const data = await UserProfile.findById(id);
+    res.send(data)
+})
+
+app.put("/api/user/:id", upload.single("image"), async (req, res) => {
+    try {
+        const id = req.params.id;
+        if (req.file) {
+            cloudinary.uploader.upload_stream({resource_type: "image", folder: "UserFolder"}, async (err, result) => {
+                const response = await UserProfile.findByIdAndUpdate(id, {...req.body, image: {url: result.secure_url, imageId: result.public_id},
+                })
+                cloudinary.uploader.destroy(response.image?.imageId, (err) => {
+                    console.log(err);
+                })
+                res.send(response)
+            }).end(req.file.buffer)
+        } else {
+            const updateUser = await UserProfile.findByIdAndUpdate(id, req.body)
+            res.send(updateUser)
+        }
+    } catch (err) {
+        console.log(err);
+        res.sendStatus(500).send(err)
+    }
+})
+
+app.delete("/api/user/:id", async (req, res) => {
+    const id = req.params.id;
+    try {
+        const deleteProfile = await UserProfile.findOneAndDelete(id);
+        cloudinary.uploader.destroy(deleteProfile.image?.imageId, (err) => {
+            console.log(err);
+            res.send(deleteProfile)
+        })
+    } catch (err) {
+        console.log(err);
+        res.send("Error")
+    }
+})
+
+
+
+
+
+
+
 
 
 
