@@ -21,7 +21,6 @@ const ProfilPage = () => {
         getUser()
     }, [refresh])
 
-    // DELETE USER
     const deleteUser = async (userId) => {
         try {
             const {data} = await axios.delete(`/api/user/${userId}`)
@@ -31,7 +30,6 @@ const ProfilPage = () => {
         }
     }
 
-    // BACK BTN
     const navigate = useNavigate()
 
     const goBack = () => {

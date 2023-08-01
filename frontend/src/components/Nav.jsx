@@ -10,7 +10,7 @@ const Nav = () => {
             <NavLink to="/categoryPage/small">SMALL STUFF</NavLink>
             <NavLink to="/createProfile">CreateProfile</NavLink>
             <NavLink to="/loginPage">Sign In</NavLink>
-            <NavLink to="/profilePage/:id">Profile</NavLink>
+            {/* <NavLink to="/profilePage">Profile</NavLink> */}
         </nav>
      );
 }

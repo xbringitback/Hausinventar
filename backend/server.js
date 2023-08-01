@@ -5,9 +5,9 @@ import cors from "cors";
 import multer from "multer";
 import "./model/index.js";
 
+import {userRouter} from "./routes.js"
 import {Inventory} from "./model/InventarModel.js"
-import {UserProfile} from "./model/UserModel.js"
-
+import {User} from "./model/UserModel.js"
 import {v2 as cloudinary} from 'cloudinary';
           
 // cloudinary.config({ 
@@ -29,6 +29,7 @@ const upload = multer({storage: multer.memoryStorage()})
 app.use(express.json());
 // app.use(morgan("dev"));
 app.use(cors());
+app.use("/api", userRouter)
 
 app.get("/api/inventar", async (req, res) => {
     const data = await Inventory.find()
@@ -97,7 +98,7 @@ app.post("/api/user/image", upload.single("image"), async (req, res) => {
     try {
         cloudinary.uploader.upload_stream({resource_type: "image", folder: "UserFolder"}, async (err, result) => {
             console.log(result, err);
-            const response = await UserProfile.create({...req.body, image: {url: result.secure_url, imageId: result.public_id}
+            const response = await User.create({...req.body, image: {url: result.secure_url, imageId: result.public_id}
             })
             res.send(response)
         }).end(req.file.buffer)
@@ -108,13 +109,13 @@ app.post("/api/user/image", upload.single("image"), async (req, res) => {
 })
 
 // app.get("/api/user", async (req, res) => {
-//     const data = await UserProfile.find()
+//     const data = await User.find()
 //     res.send(data)
 // })
 
 app.get("/api/user/:id", async (req, res) => {
     const id = req.params.id;
-    const data = await UserProfile.findById(id);
+    const data = await User.findById(id);
     res.send(data)
 })
 
@@ -123,7 +124,7 @@ app.put("/api/user/:id", upload.single("image"), async (req, res) => {
         const id = req.params.id;
         if (req.file) {
             cloudinary.uploader.upload_stream({resource_type: "image", folder: "UserFolder"}, async (err, result) => {
-                const response = await UserProfile.findByIdAndUpdate(id, {...req.body, image: {url: result.secure_url, imageId: result.public_id},
+                const response = await User.findByIdAndUpdate(id, {...req.body, image: {url: result.secure_url, imageId: result.public_id},
                 })
                 cloudinary.uploader.destroy(response.image?.imageId, (err) => {
                     console.log(err);
@@ -131,7 +132,7 @@ app.put("/api/user/:id", upload.single("image"), async (req, res) => {
                 res.send(response)
             }).end(req.file.buffer)
         } else {
-            const updateUser = await UserProfile.findByIdAndUpdate(id, req.body)
+            const updateUser = await User.findByIdAndUpdate(id, req.body)
             res.send(updateUser)
         }
     } catch (err) {
@@ -143,7 +144,7 @@ app.put("/api/user/:id", upload.single("image"), async (req, res) => {
 app.delete("/api/user/:id", async (req, res) => {
     const id = req.params.id;
     try {
-        const deleteProfile = await UserProfile.findOneAndDelete(id);
+        const deleteProfile = await User.findOneAndDelete(id);
         cloudinary.uploader.destroy(deleteProfile.image?.imageId, (err) => {
             console.log(err);
             res.send(deleteProfile)
@@ -153,7 +154,6 @@ app.delete("/api/user/:id", async (req, res) => {
         res.send("Error")
     }
 })
-
 
 
 
