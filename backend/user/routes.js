@@ -1,7 +1,12 @@
 import { Router } from "express";
-import { User } from "./model/UserModel.js";
+import { User } from "./UserModel.js";
+import { authenticateToken, generateAccessToken } from "./authToken.js";
 
 export const userRouter = Router();
+
+const hoursInMilisec = (hours) => {
+  return 1000 * 60 * 60 * hours;
+}
 
 // ! User ausgeben
 userRouter.get("/aut", async (req, res) => {
@@ -12,6 +17,7 @@ userRouter.get("/aut", async (req, res) => {
 // ! SignUp
 userRouter.post("/signup", async (req, res) => {
   const { name, email, password } = req.body;
+  console.log(req.body);
   let user = new User({ name, email });
   user.setPassword(password);
   user = await user.save();
@@ -26,6 +32,11 @@ userRouter.post("/login", async (req, res) => {
 
   const passwordIsValid = user.verifyPassword(password);
   if (passwordIsValid) {
+
+    const token = generateAccessToken({email})
+    // console.log(token);
+    res.cookie("auth", token, {httpOnly: true, maxAge: hoursInMilisec(4)})
+    
     res.send({ message: "Success", data: user });
   } else {
     res.status(404).send({

@@ -12,6 +12,7 @@ const CreateProfilePage = () => {
     e.preventDefault();
 
     try {
+      console.log({name, email, password} );
       const response = await axios.post("/api/signup", { name, email, password });
       const { data } = response;
       console.log("successful", data);

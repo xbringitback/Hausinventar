@@ -1,13 +1,13 @@
 import "./config/config.js";
 import express from "express";
 import cors from "cors";
-// import morgan from "morgan";
+import cookieParser from "cookie-parser";
 import multer from "multer";
 import "./model/index.js";
 
-import {userRouter} from "./routes.js"
+import {userRouter} from "./user/routes.js"
 import {Inventory} from "./model/InventarModel.js"
-import {User} from "./model/UserModel.js"
+import {User} from "./user/UserModel.js"
 import {v2 as cloudinary} from 'cloudinary';
           
 // cloudinary.config({ 
@@ -26,10 +26,12 @@ const app = express();
 const PORT = 3001;
 const upload = multer({storage: multer.memoryStorage()})
 
+
 app.use(express.json());
 // app.use(morgan("dev"));
 app.use(cors());
 app.use("/api", userRouter)
+app.use(cookieParser());
 
 app.get("/api/inventar", async (req, res) => {
     const data = await Inventory.find()
@@ -114,7 +116,8 @@ app.post("/api/user/image", upload.single("image"), async (req, res) => {
 // })
 
 app.get("/api/user/:id", async (req, res) => {
-    const id = req.params.id;
+    const {id} = req.params;
+    console.log(id);
     const data = await User.findById(id);
     res.send(data)
 })

@@ -4,7 +4,6 @@ import {useState, useEffect} from "react"
 import {useParams, useNavigate} from "react-router-dom"
 import ProfileCard from "../components/ProfileCard";
 import AddProfile from "../components/AddProfile";
-// import EditProfile from "../components/EditProfile";
 
 const ProfilPage = () => {
 
