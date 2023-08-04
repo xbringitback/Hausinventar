@@ -33,10 +33,10 @@ userRouter.post("/login", async (req, res) => {
   const passwordIsValid = user.verifyPassword(password);
   if (passwordIsValid) {
 
-    const token = generateAccessToken({email})
+    const token = generateAccessToken({ email })
     // console.log(token);
-    res.cookie("auth", token, {httpOnly: true, maxAge: hoursInMilisec(4)})
-    
+    res.cookie("auth", token, { httpOnly: true, maxAge: hoursInMilisec(4) })
+
     res.send({ message: "Success", data: user });
   } else {
     res.status(404).send({

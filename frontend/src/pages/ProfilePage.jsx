@@ -14,11 +14,17 @@ const ProfilPage = () => {
     // GET DATA
     useEffect(()=>{
         const getUser = async () => {
-            const response = await axios.get(`/api/user/${params.id}`)
-            setUserProfile(response.data)
+            try {
+                if (params.id) {
+                    const response = await axios.get(`/api/user/${params.id}`)
+                    setUserProfile(response.data)
+                }
+            } catch (error) {
+                console.log(error);
+            }
         }
         getUser()
-    }, [refresh])
+    }, [refresh, params.id])
 
     const deleteUser = async (userId) => {
         try {

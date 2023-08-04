@@ -10,12 +10,6 @@ import {Inventory} from "./model/InventarModel.js"
 import {User} from "./user/UserModel.js"
 import {v2 as cloudinary} from 'cloudinary';
           
-// cloudinary.config({ 
-//   cloud_name: 'dqjog4rue', 
-//   api_key: '976473871432195', 
-//   api_secret: 'akSg3BKvBdgWf_1rVxU0jKcLiK8' 
-// });
-
 cloudinary.config({ 
     cloud_name: process.env.CLOUDINARY_CLOUDNAME, 
     api_key: process.env.CLOUDINARY_API_KEY, 
@@ -25,7 +19,6 @@ cloudinary.config({
 const app = express();
 const PORT = 3001;
 const upload = multer({storage: multer.memoryStorage()})
-
 
 app.use(express.json());
 // app.use(morgan("dev"));
@@ -110,16 +103,21 @@ app.post("/api/user/image", upload.single("image"), async (req, res) => {
     }
 })
 
-// app.get("/api/user", async (req, res) => {
-//     const data = await User.find()
-//     res.send(data)
-// })
+app.get("/api/user", async (req, res) => {
+    const data = await User.find()
+    res.send(data)
+})
 
 app.get("/api/user/:id", async (req, res) => {
     const {id} = req.params;
     console.log(id);
-    const data = await User.findById(id);
-    res.send(data)
+    if (id){
+        const data = await User.findById(id);
+        res.send(data)
+    } else {
+        res.status(500).send("bingbong")
+    }
+    
 })
 
 app.put("/api/user/:id", upload.single("image"), async (req, res) => {

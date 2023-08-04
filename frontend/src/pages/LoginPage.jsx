@@ -3,6 +3,7 @@ import axios from "axios";
 import { useNavigate } from "react-router-dom";
 
 import Nav from "../components/Nav";
+
 const LoginPage = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -15,8 +16,9 @@ const LoginPage = () => {
 
     try {
       const response = await axios.post("/api/login", { email, password });
-      const { data } = response;
-      nav("/profilePage")
+      const { data } = response.data;
+      console.log(data);
+      nav(`/profilePage/${data._id}`)
       console.log("Login successful", data);
     } catch (error) {
       setErrorMessage("Login failed. Please check your email and password.");

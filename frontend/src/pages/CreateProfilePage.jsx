@@ -6,7 +6,7 @@ const CreateProfilePage = () => {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [errorMessage, setErrorMessage] = useState("");
+  const [message, setMessage] = useState("");
 
   const signUp = async (e) => {
     e.preventDefault();
@@ -15,9 +15,10 @@ const CreateProfilePage = () => {
       console.log({name, email, password} );
       const response = await axios.post("/api/signup", { name, email, password });
       const { data } = response;
-      console.log("successful", data);
+      // console.log("successful", data);
+      setMessage("successfully")
     } catch (error) {
-      setErrorMessage("failed")
+      setMessage("failed")
       // console.log(error);
     }
   };
@@ -48,7 +49,7 @@ const CreateProfilePage = () => {
           />
           <button type="submit">Create Account</button>
         </form>
-        {errorMessage && <p>{errorMessage}</p>}
+        {message && <p>{message}</p>}
       </div>
     
     </>
